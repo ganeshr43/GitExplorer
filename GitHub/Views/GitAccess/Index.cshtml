@@ -1,0 +1,117 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="~/Styles/bootstrap.css">
+    <script type="text/javascript" src="~/Scripts/libs/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="~/Scripts/libs/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="~/Scripts/libs/ember-1.5.0.js"></script>
+</head>
+<body>
+    <div id="github-app"> 
+    </div>
+    
+    <script type="text/x-handlebars"  data-template-name="index">
+        <p>GitHub Explorer</p>
+        {{input placeholder="Enter User Name(First Name and Last Name)" valueBinding="name" }}
+        {{input placeholder="Enter Login Name" valueBinding="login" }}
+        <button {{action 'addUser' }}>Add user</button>
+        <ul>
+        {{#each dev in devs}}
+            <li>{{#link-to 'user' dev.login}}{{dev.name}}{{/link-to}}</li>
+        {{/each}}
+        </ul>
+    </script>
+    <script type="text/x-handlebars"  data-template-name="user">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="well">
+                    <p class="text-center">
+                        {{#link-to 'user' this}}<img {{bind-attr src=avatar_url}} style="width:140px"/>{{/link-to}}
+                    </p>
+                    <h4>{{#link-to 'user' this}}{{name}}{{/link-to}}</h4>
+                    <p>
+                        {{company}}<br />
+                        {{location}}<br />
+                        {{email}}<br />
+                    </p>
+                    <hr />
+                    <table class="table table-striped">
+                        <tr><td>Followers:</td><td>{{followers}}</td></tr>
+                        <tr><td>Repositories:</td><td>{{public_repos}}</td></tr>
+                        <tr><td>Gists:</td><td>{{public_gists}}</td></tr>
+                    </table>
+                    <p>
+                        {{#link-to "index"}}Back{{/link-to}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                {{outlet}}
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="user/index">
+        <h2>{{name}}'s GitHub</h2>
+        <hr />
+        <ul>
+            <li>{{#link-to 'repositories' this}}Repositories{{/link-to}}</li>
+            <li><a href="#">News and Events</a></li>
+            <li><a href="#">Gists</a></li>
+        </ul>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="repositories">
+        <ol class="breadcrumb">
+            <li>{{#link-to 'index'}}Devs{{/link-to}}</li>
+            <li>{{#link-to 'user' user}}{{user.name}}{{/link-to}}</li>
+            <li class="active">Respositories</li>
+        </ol>
+        <table class="table table-striped">
+            <tbody>
+            {{#each}}
+            <tr><td><h4>{{#link-to 'repository' this.name}}{{name}}{{/link-to}}</h4></td></tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="repository">
+        <ol class="breadcrumb">
+            <li>{{#link-to 'index'}}Devs{{/link-to}}</li>
+            <li>{{#link-to 'user' user}}{{user.name}}{{/link-to}}</li>
+            <li>{{#link-to 'repositories' user}}Respositories{{/link-to}}</li>
+            <li class="active">{{name}}</li>
+        </ol>
+        <h1>{{name}} Repo</h1>
+        <p>{{description}}</p>
+        <ul>
+            <li>Language    :{{language}}</li>
+            <li>Watchers    :{{watchers}}</li>
+            <li>Open Issues :{{open_issues}}</li>
+            <li>Clone       :{{clone_url}}</li>
+            <li>Web         :<a {{bind-attr href=html_url}} target="_blank">{{html_url}}</a></li>
+        </ul>
+    
+    </script>
+    <script type="text/javascript" src="~/AppScripts/GitHubExplorerApp.js"></script>
+    <script type="text/javascript" src="~/AppScripts/GitHubExplorerRouter.js"></script>
+    <script type="text/javascript" src="~/AppScripts/Controllers.js"></script>
+    <script>
+        //var devs = [
+        //    { login: "ganeshr43", name: "Ganesh Ratnaparkhi" },
+        //    { login: "metalshan", name: "Paul Shan" },
+        //    { login: "chigur", name: "Ajinkya Tejankar" }
+        //];
+    </script>
+</body>
+
+</html>
